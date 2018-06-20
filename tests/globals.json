@@ -1,0 +1,33 @@
+{
+  "id": "1ad68dba-104a-4147-866c-a81da1317f4d",
+  "values": [
+    {
+      "key": "contactInfoscanpri",
+      "value": "",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "contactinfoscan",
+      "value": "/contactinfo/api/v2/contactinfo",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "contactinfoscanstatus",
+      "value": "/contactinfo/api/v2/contactinfo-status",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "contactinfoscancancel",
+      "value": "/contactinfo/api/v2/contactinfo-cancel",
+      "enabled": true,
+      "type": "text"
+    }
+  ],
+  "name": "My Workspace Globals",
+  "_postman_variable_scope": "globals",
+  "_postman_exported_at": "2018-06-15T20:22:43.896Z",
+  "_postman_exported_using": "Postman/6.1.3"
+}

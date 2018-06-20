@@ -1,0 +1,21 @@
+{
+  "id": "c7d10ec3-1cb2-4b9d-adc5-a31e8a9bd98f",
+  "name": "QA",
+  "values": [
+    {
+      "key": "harvesterserviceendpoint",
+      "value": "https://harvesterservice.leapfrog.qa.mm-corp.net",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "contactInfoscanpri",
+      "value": null,
+      "enabled": true,
+      "type": "text"
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2018-06-15T20:22:22.543Z",
+  "_postman_exported_using": "Postman/6.1.3"
+}

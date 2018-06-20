@@ -1,0 +1,15 @@
+{
+  "name": "postman-analysis",
+  "version": "1.0.0",
+  "description": "Sample project for postman",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "api-test-qa": "newman run tests/ContactInfoSuite.json -e QA_environment.json -g globals.json -d ContactInfoData.csv"
+  },
+  "author": "kavitha",
+  "dependencies": {
+    "newman": "^3.9.4"
+  }
+}

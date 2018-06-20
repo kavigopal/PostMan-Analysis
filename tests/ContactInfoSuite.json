@@ -1,0 +1,313 @@
+{
+	"info": {
+		"_postman_id": "8d411e0d-3feb-45ff-b8f5-2e3e8b1e9554",
+		"name": "ContactInfoSuite",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "contactscanverification",
+			"description": null,
+			"item": [
+				{
+					"name": "ContactInfoScan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0728c335-0edd-4984-a0b4-401ade36124b",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify Scanstatus\", function () {",
+									"    pm.expect(jsonData.statusCode).to.eql(\"Pending\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify contact info scan PRI\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.primaryRequestId)!==null;",
+									"});",
+									"",
+									"pm.environment.set(\"contactInfoscanpri\", jsonData.primaryRequestId);",
+									"",
+									"if(responseCode.code==200  && jsonData.contactInfoscanpri!==null) {",
+									"    postman.setNextRequest(\"ContactInfoScanStatus\");",
+									"}",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"domainContactInfoSource\": \"InternalCrawler\",\n  \"domainName\": \"{{domainName}}\",\n  \"priority\": {{priority}},\n  \"referenceId\": \"QAAutomation\",\n  \"requestType\": \"Status\",\n  \"requesterApplication\": \"Brand\",\n  \"requesterModule\": \"ContactInfo\"\n}"
+						},
+						"url": {
+							"raw": "{{harvesterserviceendpoint}}{{contactinfoscan}}",
+							"host": [
+								"{{harvesterserviceendpoint}}{{contactinfoscan}}"
+							]
+						},
+						"description": "Submit Scan"
+					},
+					"response": []
+				},
+				{
+					"name": "ContactInfoScanStatus",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0ef0f1c2-5627-4276-89e3-cb33492b4ccd",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"if(jsonData.statusCode!==\"Success\"){",
+									"    postman.setNextRequest(\"ContactInfoScanStatus\");",
+									"}else{",
+									"    postman.setNextRequest(\"ContactInfoScanData\");",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{harvesterserviceendpoint}}{{contactinfoscanstatus}}?primaryRequestId={{contactInfoscanpri}}",
+							"host": [
+								"{{harvesterserviceendpoint}}{{contactinfoscanstatus}}"
+							],
+							"query": [
+								{
+									"key": "primaryRequestId",
+									"value": "{{contactInfoscanpri}}"
+								}
+							]
+						},
+						"description": "Submit Scan"
+					},
+					"response": []
+				},
+				{
+					"name": "ContactInfoScanData",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c72a1fa7-2745-468f-95ba-8c737a5e0cdf",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify Scanstatus\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.statusCode).to.eql(\"Success\");",
+									"});",
+									"",
+									"",
+									"pm.globals.unset(\"contactInfoscanpri\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{harvesterserviceendpoint}}{{contactinfoscanstatus}}?primaryRequestId={{contactInfoscanpri}}&domain={{domainName}}&source=InternalCrawler",
+							"host": [
+								"{{harvesterserviceendpoint}}{{contactinfoscanstatus}}"
+							],
+							"query": [
+								{
+									"key": "primaryRequestId",
+									"value": "{{contactInfoscanpri}}"
+								},
+								{
+									"key": "domain",
+									"value": "{{domainName}}"
+								},
+								{
+									"key": "source",
+									"value": "InternalCrawler"
+								}
+							]
+						},
+						"description": "Submit Scan"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "contactinfoscanDelete",
+			"description": null,
+			"item": [
+				{
+					"name": "ContactInfoScan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3b37eb49-e3db-4897-9482-1bb079c9494c",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify Scanstatus\", function () {",
+									"    pm.expect(jsonData.statusCode).to.eql(\"Pending\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify contact info scan PRI\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.primaryRequestId)!==null;",
+									"});",
+									"",
+									"pm.environment.set(\"contactInfoscanpri\", jsonData.primaryRequestId);",
+									"",
+									"if(responseCode.code==200  && jsonData.contactInfoscanpri!==null) {",
+									"    postman.setNextRequest(\"ContactInfoScancancel\");",
+									"}",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"domainContactInfoSource\": \"InternalCrawler\",\n  \"domainName\": \"{{domainName}}\",\n  \"priority\": {{priority}},\n  \"referenceId\": \"QAAutomation\",\n  \"requestType\": \"Status\",\n  \"requesterApplication\": \"Brand\",\n  \"requesterModule\": \"ContactInfo\"\n}"
+						},
+						"url": {
+							"raw": "{{harvesterserviceendpoint}}{{contactinfoscan}}",
+							"host": [
+								"{{harvesterserviceendpoint}}{{contactinfoscan}}"
+							]
+						},
+						"description": "Submit Scan"
+					},
+					"response": []
+				},
+				{
+					"name": "ContactInfoScancancel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4a3470f9-9b77-4c30-bf67-e9e3b79bb932",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify Scanstatus\", function () {",
+									"    pm.expect(jsonData.statusCode).to.eql(\"Success\");",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"domainContactInfoSource\": \"InternalCrawler\",\n  \"domainName\": \"{{domainName}}\",\n  \"priority\": {{priority}},\n  \"referenceId\": \"QAAutomation\",\n  \"requestType\": \"Status\",\n  \"requesterApplication\": \"Brand\",\n  \"requesterModule\": \"ContactInfo\"\n}"
+						},
+						"url": {
+							"raw": "{{harvesterserviceendpoint}}{{contactinfoscancancel}}?primaryRequestId={{contactInfoscanpri}}&requester=QAAutomation&reason=CancelTesting",
+							"host": [
+								"{{harvesterserviceendpoint}}{{contactinfoscancancel}}"
+							],
+							"query": [
+								{
+									"key": "primaryRequestId",
+									"value": "{{contactInfoscanpri}}"
+								},
+								{
+									"key": "requester",
+									"value": "QAAutomation"
+								},
+								{
+									"key": "reason",
+									"value": "CancelTesting"
+								}
+							]
+						},
+						"description": "Submit Scan"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
